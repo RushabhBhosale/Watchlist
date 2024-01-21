@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+.slides {
+   position: relative;
+}
+
+.slides img {
+   width: 100vw;
+   margin-left: -0.5px;
+   height: 100vh;
+   object-fit: cover !important;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+   color: rgba(0, 0, 0, 0) !important;
+   height: 70vh !important;
+   transform: translateY(-50%);
+}
+
+.poster-overlay {
+   padding: 40px 40px 40px 80px;
+   position: absolute;
+   width: 100%;
+   height: 65vh !important;
+   background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+   bottom: 0;
+   z-index: 1;
+}
+
+.poster-overlay .title {
+   text-shadow: 3px 4px 20px rgba(0,0,0,0.3);
+   font-size: 4rem;
+   color: white;
+   font-family: 'Anton', sans-serif;
+}
+
+.date {
+   font-size: 1.1rem;
+   display: flex;
+   gap: 20px;
+   align-items: center;
+}
+
+.release {
+   color: black;
+   font-weight: 500;
+}
+
+.date .vote {
+   padding: 4px 12px;
+   color: black;
+   background-color: #f4be00;
+   border-radius: 4px;
+   font-weight: 500;
+}
+
+.genres {
+   gap: 10px;
+   flex-wrap: wrap;
+}
+
+.genres p {
+   color: black;
+   padding: 4px 12px;
+   background-color: #ffffff;
+   border-radius: 4px;
+   margin-bottom: 0;
+   cursor: pointer;
+}
+
+.btn-box {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+}
+
+.btn-box .btns {
+   display: flex;
+   align-items: center;
+   padding: 12px 20px;
+   min-width: 140px;
+   border-radius: 5px;
+   min-height: 48px;
+   cursor: pointer;
+}
+
+.btn-box .btns.play {
+   background-color: white;
+   color: black;
+   gap: 10px;
+   font-size: 1.3rem;
+   font-weight: 500;
+   display: flex;
+   justify-content: center;
+}
+
+.btn-box .btns.play i {
+   color: black;
+}
+
+.btn-box .btns.info {
+   background-color: #414341;
+   color: white;
+   font-size: 1.1rem;
+   gap: 10px;
+   height: 54px;
+}
+
+
+@media (max-width: 768px) {
+   .slides img {
+      width: 100vw;
+      height: calc(60vh - 72px);
+      object-fit: cover !important;
+   }
+
+   .swiper-button-prev,
+   .swiper-button-next {
+      color: rgba(0, 0, 0, 0) !important;
+   }
+}
+
+@media (max-width: 576px) {
+   .slides img {
+      width: 100vw;
+      height: calc(70vh - 72px);
+      object-fit: cover !important;
+   }
+
+   .poster-overlay {
+      padding: 10px;
+      height: 35vh !important;
+   }
+   
+   .poster-overlay .title {
+      font-size: 2rem;
+   }
+   
+   .date {
+      font-size: 0.8rem;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+   }
+   
+   .release {
+      color: black;
+      font-weight: 500;
+   }
+   
+   .date .vote {
+      padding: 2px 6px;
+   }
+   
+   .genres {
+      gap: 5px;
+      flex-wrap: wrap;
+   }
+   
+   .genres p {
+      color: rgb(255, 255, 255);
+      background-color: transparent;
+      padding:0;
+      font-weight: 500;
+   }
+
+   .synopsis {
+      font-size: 0.7rem;
+   }
+
+   .btn-box .btns {
+      padding: 4px 8px;
+      min-width: 120px;
+      min-height: 38px;
+   }
+   
+   .btn-box .btns.play {
+      font-size: 1.1rem;
+   }
+   
+   .btn-box .btns.info {
+      font-size: 1rem;
+      height: 38px;
+   }
+
+}
