@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { fetchDataFromApi } from '../../utils/api';
@@ -9,12 +9,17 @@ const Detail = () => {
    const { id } = useParams();
    const dispatch = useDispatch();
    const { url, recommendations } = useSelector((state) => state.home);
-   console.log(recommendations)
+
+   const [displayedSeasons, setDisplayedSeasons] = useState(2);
+
+   const loadMore = () => {
+      setDisplayedSeasons(displayedSeasons + 100);
+   }
 
    useEffect(() => {
       fetchMovieData();
       fetchRecommendations();
-      window.scroll(0,0)
+      // window.scroll(0,0)
    }, [id]);
 
    const fetchMovieData = () => {
@@ -45,8 +50,8 @@ const Detail = () => {
                      {url && url.original_name && <h3>{url.name}</h3>}
                   </div>
                   <div className='movie-year d-md-flex align-items-center'>
-                     <span className='year'>{url && url.first_air_date && <p className='fs-6'>Release: {new Date(url.first_air_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: '2-digit' })}<span className='vote d-md-none ms-3'>{url && url.vote_average}</span></p>}</span>
-                     <span className='vote d-md-block d-none'>{url && url.vote_average}</span>
+                     <span className='year'>{url && url.first_air_date && <p className='fs-6'>Release: {new Date(url.first_air_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: '2-digit' })}<span className='vote d-md-none ms-3'>{url && url.vote_average.toFixed(2)}</span></p>}</span>
+                     <span className='vote d-md-block d-none'>{url && url.vote_average && url.vote_average.toFixed(2)}</span>
                   </div>
                   <div className="movie-genre d-flex gap-2 text-white">Genres:
                      {url && url.genres && url.genres.map((genre, index) => (
@@ -56,9 +61,9 @@ const Detail = () => {
                   <div className='author'>
                      {url && url.created_by && url.created_by.length > 0 && (
                         <div className="writers d-flex mt-3 gap-3 fs-5">
-                           <p className='fw-semibold'>Writers:</p>
+                           <p className='fw-semibold fs-6'>Writers:</p>
                            {url.created_by.map((creator) => (
-                              <p className='fw-semibold' key={creator.id}>{creator.name}</p>
+                              <p className='fw-semibold fs-6' key={creator.id}>{creator.name}</p>
                            ))}
                         </div>
                      )}
@@ -72,32 +77,89 @@ const Detail = () => {
                </div>
             </div>
          </div>
+         <div className="seasons mb-5 d-lg-flex ms-lg-5 ps-lg-5">
+            <div className="col-lg-5 mb-5 px-3 px-lg-0">
+               <h4>Additional Information</h4>
+               <div>
+                  <p className='fw-medium mb-1'>Status: {url.status}</p>
+                  <p className='fw-medium mb-1'>Seasons: {url.number_of_seasons}</p>
+                  <p className='fw-medium mb-1'>No of Episodes: {url.number_of_episodes}</p>
+                  <p className='fw-medium mb-1'>Tagline: {url.tagline}</p>
+                  <p className='fw-medium mb-1'>Votes: {url.vote_count}</p>
+                  <p className='fw-medium mb-1'>Votes: {url.type}</p>
+                  {url.production_companies?.map((production, index) => (
+                     <span key={index} className='fw-medium mb-1'>Production: {production.name}</span>
+                  ))}
 
+               </div>
+            </div>
+            <div className="col-lg-3 d-none d-md-block">
+               {url.created_by?.map((creator, index) => (
+                  <div key={index} className='d-flex align-items-center mb-4'>
+                     <div className="profile-image col-2">
+                        {creator.profile_path && <img className='img-fluid' src={`https://image.tmdb.org/t/p/w200/${creator.profile_path}`} alt="" />}
+                     </div>
+                     <h5>{creator.name}</h5>
+                  </div>
+               ))}
+            </div>
+            <div className='px-lg-5 col-lg-3 px-3 px-lg-0'>
+               <h4>Seasons</h4>
+               <div className='row'>
+                  {url.seasons?.slice(0, displayedSeasons).map((season) => (
+                     <div className='mb-2' key={season.id}>
+                        <div className="row">
+                           <div className="col-4 d-none d-md-block">
+                              <img className='img-fluid' src={`https://image.tmdb.org/t/p/w200/${season.poster_path}`} alt={`Season ${season.season_number}`} />
+                           </div>
+                           <div className="col-2 d-md-none">
+                              <img className='img-fluid' src={`https://image.tmdb.org/t/p/w200/${season.poster_path}`} alt={`Season ${season.season_number}`} />
+                           </div>
+                           <div className="col-8 season-info">
+                              <div>
+                                 <p className='mb-0'>Season {season.season_number}: {season.name}</p>
+                                 <p className='mb-0'>Episodes: {season.episode_count}</p>
+                                 <p className='d-none d-md-block'>Air Date: {season.air_date || 'null'}</p>
+                                 <p className='d-none d-md-block'>Rating: {season.vote_average || 'null'}</p>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  ))}
+               </div>
+               <div className="btn bg-warning fw-semibold mt-3" onClick={loadMore}>
+                  Load more
+               </div>
+            </div>
+         </div>
          <div className='px-5 d-none d-md-block'>
             <h4>More like this:</h4>
-            <div className='recommendations d-flex gap-1'>
+            <div className='recommendations d-flex gap-3'>
                {recommendations && recommendations.results && recommendations.results.length > 0 && (
-                  recommendations.results.slice(0, 7).map((recommendation) => (
-                     <div className='rec-movie'>
+                  recommendations.results.slice(0, 6).map((recommendation, index) => (
+                     <div key={index} className='rec-movie position-relative'>
                         <div className="rec-image">
                            <Link to={`/detail/${recommendation.id}`}>
-                              <img className='img-fluid'
+                              <img className='img-fluid luffy'
                                  src={recommendation.poster_path ? `https://image.tmdb.org/t/p/w200/${recommendation.poster_path}` : ''}
                                  alt=""
                               />
                            </Link>
+                        </div>
+                        <div className="rec-title fw-semibold my-2 ps-2">
+                           {recommendation.name}
                         </div>
                      </div>
                   ))
                )}
             </div>
          </div>
-         <div className='px-2 d-md-none'>
+         <div className='px-2 d-md-none '>
             <h4>More like this:</h4>
             <div className='recommendations d-flex'>
                {recommendations && recommendations.results && recommendations.results.length > 0 && (
-                  recommendations.results.slice(0, 8).map((recommendation) => (
-                     <div className='rec-movie w-25'>
+                  recommendations.results.slice(0, 8).map((recommendation, index) => (
+                     <div key={index} className='rec-movie w-25'>
                         <div className="rec-image">
                            <Link to={`/detail/${recommendation.id}`}>
                               <img className='img-fluid'
@@ -111,6 +173,7 @@ const Detail = () => {
                )}
             </div>
          </div>
+
       </div>
    );
 };

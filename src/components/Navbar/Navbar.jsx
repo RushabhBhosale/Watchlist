@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import './Navbar.css'
+import Search from './Search'
 
 const Navbar = () => {
 
@@ -12,6 +13,7 @@ const Navbar = () => {
          <div className="menu" onClick={() => setMenuOpen(!menuOpen)}>
             <i className="fa-solid text-white fa-bars"></i>
          </div>
+         <Search />
          <ul className={menuOpen ? 'open' : ''}>
             <li>
                <NavLink to='/anime'>Anime</NavLink>

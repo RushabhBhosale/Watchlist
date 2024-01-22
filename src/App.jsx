@@ -6,6 +6,7 @@ import Navbar from './components/Navbar/Navbar'
 import Movie from './pages/Movie'
 import Webseries from './pages/Webseries'
 import Detail from './pages/Detail/Detail'
+import SearchResults from './components/SearchResults'
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
           <Route path='/movie' element={<Movie />} />
           <Route path='/webseries' element={<Webseries />} />
           <Route path='/detail/:id' element={<Detail />} />
+          <Route path='/search-results' element={<SearchResults />} />
         </Routes>
       </BrowserRouter>
     </div>
